@@ -1,0 +1,365 @@
+<!DOCTYPE html PUBLIC "FOODMONSTER">
+
+<head>
+
+		<h1> WELCOME TO FOOD MONSTER
+		<p>          by CMAF</p>
+		<title>FoodMonster</title>
+			<link rel="stylesheet" href="standardIssue.css">
+			
+			<script src="tableSearch.js"> 
+			</script> 
+			<script src="command.js"> 
+			</script> 
+			<script src="jQuery.js"> 
+			</script>
+			
+			
+		
+
+
+		<div id='monsters'>
+				
+		<SCRIPT >
+					var interval1;
+					if(!window.Halloween) Halloween=new Object();
+					Halloween.ghostImages = new Array( 
+						"<img src='snowman.png'>",
+						"<img src='snowman2.png'>",
+						"<img src='franky.png'>",
+						"<img src='elf.png'>",
+						"<img src='wolverine.png'>",
+						"<img src='zombieCook.png'>",
+						"<img src='dragonGhost.png'>",
+						"<img src='wolverine.png'>");
+					$('monsters').css('position','absolute');
+					$('snowman.png').css("left",10);
+					var ns4 = document.layers;
+					var ie4 = document.all;
+					Halloween.makeLayer = function(id)
+					{
+						var el = 	document.getElementById	? document.getElementById(id) :
+								document.all 		? document.all[id] :
+												  document.layers[id];
+						if(ns4) el.style=el;
+						el.sP=function(x,y){this.style.left = x;this.style.top=y;};
+						el.show=function(){ this.style.visibility = "visible"; } 
+						el.hide=function(){ this.style.visibility = "hidden"; } 
+						if(ns4 || window.opera) 
+							el.sO = function(pc){return 0;};
+						else if(ie4)
+							el.sO = function(pc)
+							{
+								if(this.style.filter=="")
+									this.style.filter="alpha(opacity=100);";
+								this.filters.alpha.opacity=pc;
+							}
+						else
+							el.sO = function(pc){this.style.MozOpacity=pc/100;}
+
+						return el;
+					}
+
+					if(window.innerWidth)
+					{
+						gX=function(){return innerWidth;};
+						gY=function(){return innerHeight;};
+					}
+					else
+					{
+						gX=function(){return document.body.clientWidth-30;};
+						gY=function(){return document.body.clientHeight-30;};
+					}
+					Halloween.ghostOutput=function()
+					{
+						for(var i=0 ; i<Halloween.ghostImages.length ; i++)
+							document.write(ns4 ? "<LAYER  NAME='gh"+i+"'>"+Halloween.ghostImages[i]+"</LAYER>" : 
+										   "<DIV id='gh"+i+"' style='position:absolute'>"+Halloween.ghostImages[i]+"</DIV>" );
+						
+					}
+					Halloween.ghostSprites = new Array();
+					Halloween.ghostStartAni = function()
+					{
+						for(var i=0 ;i<Halloween.ghostImages.length;i++)
+						{
+							var el=Halloween.makeLayer("gh"+i);
+							el.x=Math.random()*gX();
+							el.y=Math.random()*gY();
+							el.tx=Math.random()*gX();
+							el.ty=Math.random()*gY();
+							el.dx=-5+Math.random()*100;
+							el.dy=-5+Math.random()*100;
+							
+
+							el.state="off";
+							el.op=0;
+							el.sO(el.op);
+							el.hide();
+							Halloween.ghostSprites[i] = el;
+						}
+						 interval1=setInterval("Halloween.ghostAni()", 150);
+					}
+					Halloween.ghostAni = function()
+					{
+						for(var i=0 ;i<Halloween.ghostSprites.length;i++)
+						{
+							el=Halloween.ghostSprites[i];
+
+							if(el.state == "off")
+							{
+								if(Math.random() > .99)
+								{
+									el.state="up";
+									el.show();
+								}
+							}
+							else if(el.state == "on")
+							{
+								if(Math.random() > .98)
+									el.state="down";
+							}
+							else if(el.state == "up")
+							{
+								el.op += 2;
+								el.sO(el.op);
+								if(el.op==100)
+									el.state = "on";
+							}
+							else if(el.state == "down")
+							{
+								el.op -= 2;
+								if(el.op==0)
+								{
+									el.hide();
+									el.state = "off";
+								}
+								else
+									el.sO(el.op);
+							}
+
+							var X = (el.tx - el.x);
+							var Y = (el.ty - el.y);
+							var len = Math.sqrt(X*X+Y*Y);
+							if(len < 1) len = 1;
+							var dx = 20 * (X/len);
+							var dy = 20 * (Y/len);
+							var ddx = (dx - el.dx)/10;
+							var ddy = (dy - el.dy)/10;
+							el.dx += ddx;
+							el.dy += ddy;
+							el.sP(el.x+=el.dx,el.y+=el.dy);
+
+							if(Math.random() >.95 )
+							{
+								el.tx = Math.random()*gX();
+								el.ty = Math.random()*gY();
+							}
+							$("gh"+i).css("left",5+Math.random()*1000-Math.random()*200-Math.random()*200+Math.random()*100);
+							$("gh"+i).css("top",5+Math.random()*1000-Math.random()*400-300);
+						}
+					}
+					Halloween.ghostStart = function()
+					{
+						if(Halloween.ghostLoad)Halloween.ghostLoad();
+						Halloween.ghostStartAni();
+					}
+					Halloween.ghostOutput();
+					Halloween.ghostLoad=window.onload;
+					window.onload=Halloween.ghostStart;
+
+			</SCRIPT>
+
+			
+		</div>
+
+		<img src="menupic.jpg" alt="menu pic" width="50%" height="50%" id='smile'> 
+
+
+
+</head>
+ 
+<body>
+<div id='bats'>
+		<script >
+			
+
+
+			Cupid=new Image();
+			Cupid.src="batFly.bmp";  //specify path to bat image
+			amount=3;  //Number of cupids, minimum must be 3.
+			Xpos=700;  //cupids x coordinates, in pixel
+			Ypos=200;  //cupids y coordinates, in pixel
+			step=0.3; //Animation speed (smaller is slower)
+			dismissafter=25;  //seconds after which Cupids should disappear, in seconds
+
+			var ns6=document.getElementById&&!document.all
+			var bats=new Array(3)
+			if (document.layers){
+			for (i=0; i < amount; i++) 
+			{document.write("<LAYER NAME=n"+i+" LEFT=0 TOP=-50><IMG SRC='"+Cupid.src+"' NAME='nsi' width=69 height=60 border=0></a></LAYER>")}
+			}
+			else if (document.all||ns6){
+			document.write('<div id="out" style="position:absolute;top:0;left:0"><div id="in" style="position:relative">');
+			for (i=0; i < amount; i++){
+			if (document.all)
+			document.write('<img src="'+Cupid.src+'" id="msieBats" style="position:absolute;top:-50;left:0" border=0></a>')
+			else
+			document.write('<img src="'+Cupid.src+'" id="ns6Bats'+i+'" width=69 height=60 style="position:absolute;top:-50;left:0" border=0></a>')
+			}
+			document.write('</div></div>');
+			}
+
+			yBase=xBase=currStep=a_count=0;
+			b_count=1;
+			c_count=2;
+			d_count=3;
+			move=1;
+			if (document.layers||ns6){
+			yBase=window.innerHeight/3;
+			xBase=window.innerWidth/6;
+			if (document.layers)
+			window.captureEvents(Event.MOUSEMOVE);
+
+			}
+			if (document.all){
+			yBase = window.document.body.offsetHeight/3;
+			xBase = window.document.body.offsetWidth/6;
+			}
+
+			function dismisscupid(){
+			clearInterval(flycupid)
+			if (document.layers){
+			for (i2=0; i2 < amount; i2++){
+			document.layers['n'+i2].visibility="hide"
+			}
+			}
+			else if (document.all)
+			document.all.out.style.visibility="hidden"
+			else if (ns6)
+			document.getElementById("out").style.visibility="hidden"
+			}
+
+			if (document.layers){
+			for (i=0; i < amount; i++)
+			document.layers['n'+i].document.images['nsi'].src=Cupid.src
+			}
+			else if (document.all){
+			for (i=0; i < amount; i++)
+			document.all.msieBats[i].src=Cupid.src
+			}
+			else if (ns6){
+			for (i=0; i < amount; i++)
+			document.getElementById("ns6Bats"+i).src=Cupid.src
+			}
+
+			function Animate(){
+			a_count+=move;
+			b_count+=move;
+			c_count+=move;
+			currStep+=step;
+			if (a_count >= bats.length) a_count=0;
+			if (b_count >= bats.length) b_count=0;
+			if (c_count >= bats.length) c_count=0;
+			if (document.layers){
+			for (i=0; i < amount; i++) {
+			  var NewL="n"+i;
+			  $(NewL).css("top",Ypos+yBase*Math.sin(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/10));
+				$(NewL).css("left",-200+Xpos+xBase*Math.cos(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/62));
+
+			  }
+			}
+
+			if (document.all){
+			for (i=0; i < amount; i++){
+
+			  document.all.msieBats[i].style.pixelTop = Ypos+yBase*Math.sin(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/10)
+			  document.all.msieBats[i].style.pixelLeft =Xpos+xBase*Math.cos(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/62)
+				$(msieBats[i]).css("top",Ypos+yBase*Math.sin(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/10));
+				$(msieBats[i]).css("left",-200+Xpos+xBase*Math.cos(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/62));
+			 }
+			}
+
+			if (ns6){
+			for (i=0; i < amount; i++){
+			 
+			  document.getElementById("ns6Bats"+i).style.top = Ypos+yBase*Math.sin(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/10)
+			  document.getElementById("ns6Bats"+i).style.left =Xpos+xBase*Math.cos(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/62)
+				$("ns6Bats"+i).css("top",Ypos+yBase*Math.sin(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/10));
+				$("ns6Bats"+i).css("left",-200+Xpos+xBase*Math.cos(((currStep)+i*3.7)/4)*Math.cos((currStep+i*35)/62));
+			 }
+			}
+
+			}
+			flycupid=setInterval('Animate()',30);
+			setTimeout("dismisscupid()",dismissafter*1000)
+			//-->
+		</script>
+		</div>
+<br>
+<input type="button" value="Stop Animation" id=op1 onclick="";>
+<input type="button" value="Start Animation" id=op2 onclick="";>
+<input type="button" value="Difficulty" id=op3 onclick="";>
+<input type="button" value="# of monsters" id=op4 onclick="";>
+<br>
+<br>
+<input type="button" value="Play!" onclick="window.open('Screen.html');interval1=window.clearInterval(interval1)";>
+<input type="button" value="How To Play" onclick="Halloween.ghostStart";>
+<input type="button" value="Options" onclick="command.toggleVisibility(op1);command.toggleVisibility(op2);command.toggleVisibility(op3);command.toggleVisibility(op4);";>
+
+<input type="button" id='feedback' value="Feedback" onclick="alert('by Ankun Fang abd Connor McNarin')";>
+<input type="button" id='quit' value="quit" onclick="command.quit()";>
+<br>
+			<script>
+				var scrollDiv = function(dir, px) {
+					var scroller = document.getElementById('scroller');
+					if (dir == 'l') {
+						scroller.scrollLeft -= px;
+					}
+					else if (dir == 'r') {
+						scroller.scrollLeft += px;
+					}
+					else if (dir == 'u') {
+						scroller.scrollTop -= px;
+					}
+					else if (dir == 'd'){
+						scroller.scrollTop += px;
+					}
+				}
+			</script>
+
+			<a href="javascript: void(0);" onclick="scrollDiv('l', 30); return false;">scroll left</a>
+			|
+			<a href="javascript: void(0);" onclick="scrollDiv('r', 30); return false;"> scroll right</a>
+			|
+			<a href="javascript: void(0);" onclick="scrollDiv('u', 30); return false;"> scroll up</a>
+			|			
+			<a href="javascript: void(0);" onclick="scrollDiv('d', 30); return false;"> scroll down</a>
+
+			<div id="scroller" id = "scroller" disabled="false">
+				<div id="inner-scroller">
+					Words of Encouragement<br>
+					To beat this game, you must be Yoda.<br>
+					If you are not, you cannot beat this game.<br>
+					You can however, beat your previous score.<br>
+					<br>
+					Introduction<br>
+					You must
+					<style type="scroller/css" >
+					  #scroller{ display:none;}
+					  #innerscroller{ display:none;}
+					</style>
+					
+				</div>
+			</div>    
+			
+			
+<br>
+
+</a>
+
+
+</body>
+
+
+</html>
+

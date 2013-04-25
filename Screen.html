@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "Screen">
+<head>
+     <h1> New Game2
+	 <a href="return" onclick="window.open('Menu.html')"> 
+Quit</a>
+    <p></p>
+    <title>screen2</title>
+    <link rel="stylesheet" href="compactIssue.css">
+<script src="JQuery.js">
+</script>
+    <script src="tableSearch.js"> 
+ 	 </script> 
+    <script src="command.js"> 
+ 	 </script> 
+    <script src="mathQuestionGenerator.js"> 
+ 	 </script> 
+
+
+	<div id='batBlog'>
+
+			<img src="batFly.bmp" alt="bat" id='bat' onload="">
+
+	</div>
+
+</head>
+<br>
+
+
+
+
+
+
+ 
+<body>
+
+
+	<div id='questionBlog' >
+
+			<script>
+			for(var i=0;i<enemyNumber;i++)
+			{
+				var tempImage = new Image();
+				tempImage.src = enemyPosition[i].enemyImage();
+				var smile = 0;
+				
+				var monsterImage=$('<img src="'+ tempImage.src+ '" class="monster" alt=\"Monster Image\" width=\"100%\" height=\"100%\" id=\"smile'+ i+'\">');
+			monsterImage.css("top","0px");//450 is the height length
+			monsterImage.css("left","100px");
+			monsterImage.appendTo("#questionBlog");
+			}
+			</script>
+			
+			
+	<input  type="button" value="AIM" id='aim'  onclick="command.throwAction('aim');">
+	
+	</div>
+	
+
+
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<div id='boyBlog'>
+	###########
+	<img src="boyBack.png" style="float:middle" alt="Boy" width="50" height="50" id="boy" onload="timingForPlayer('boyBlog',100);" >
+	###########
+		
+	</div>
+	
+	<img src="land.png" alt="Boy" id='boy' >
+	<br>
+	<table>
+		<div p id ='question'>Question</p>
+			   <tbody>
+				
+					<tr>
+						<td>
+							Answer<input type="text" size="10" maxlength="10" value="" id="mathAnswer"  />
+							<input type="button" disabled="true" value="THROW" id="throwButton" onclick="
+							matchNumber();
+							aa = 0;
+							" />
+						</td>
+					</tr>
+				<p id='countdown' value='50'></p>
+				</tbody>
+
+	</table>
+	  
+		
+	<table>
+	 
+
+
+		   <tbody>
+
+				<tr>
+					<td>
+						Remainder<input type="text" size="10" maxlength="10" value="" id="mathAnswer2"  />
+						<br>
+					</td>
+				</tr>
+		
+			</tbody>
+
+		</table>
+
+	
+<script type="text/javascript">
+	function addCode(key){
+	
+		var code = document.forms[0].code;
+		if(code.value.length < 99){
+			code.value = code.value + key; 
+		}
+		if(key == "<"){
+			document.getElementById("message").style.display = "block";
+			code.value= code.value.substring(0, code.value.length-2);
+		}
+
+		if(key == "clear"){
+			document.getElementById("message").style.display = "block";
+			code.value="";
+			
+		}
+		if(key == "?"){
+			code.value= code.value.substring(0, code.value.length-1);
+			alert("press < to delete one digit\npress <<< to delete all input\npress Anwser to put numbers on answer"
+				+"\npress Remain to put numbers on remainder");
+		}
+		if ((key == "Answer"))
+		{
+			document.getElementById("message").style.display = "block";
+			document.getElementById("message").value = "block";
+			document.getElementById("mathAnswer").value=code.value.substring(0, code.value.length-6);
+			code.value="";
+		}
+		if ((key=="Remain"))
+		{
+			document.getElementById("message").style.display = "block";
+			document.getElementById("message").value = "block";
+			document.getElementById("mathAnswer2").value=code.value.substring(0, code.value.length-6);
+			
+			code.value="";
+		}
+	}
+
+	function submitForm(){
+		document.forms[0].submit();
+	}
+
+	function emptyCode(){
+		document.forms[0].code.value = "";
+	}//CSS OF KEYPAD AFTER
+</script>
+
+<style>
+
+
+	#keypad {margin:auto; margin-top:20px;}
+
+	#keypad tr td {
+		vertical-align:middle; 
+		text-align:center; 
+		border:1px solid #000000; 
+		font-size:18px; 
+		font-weight:bold; 
+		width:40px; 
+		height:30px; 
+		cursor:pointer; 
+		background-color:#666666; 
+		color:#CCCCCC;}
+	#keypad tr td:hover {background-color:#999999; color:#FFFF00;}
+
+	.display {
+		width:130px; 
+		margin:10px auto auto auto; 
+		background-color:white; 
+		color:#00FF00; 
+		font-size:18px; 
+		border:1px solid #999999;
+	}
+	#message {
+		text-align:left; 
+		color:white; 
+		font-size:14px; 
+		font-weight:bold; 
+		display:none;
+		}
+</style>
+
+<form action="code.htm" method="get">
+	<table id="keypad" cellpadding="5" cellspacing="3">
+			<tr>
+				<td onclick="addCode('1');">1</td>
+				<td onclick="addCode('2');">2</td>
+				<td onclick="addCode('3');">3</td>
+			</tr>
+			<tr>
+				<td onclick="addCode('4');">4</td>
+				<td onclick="addCode('5');">5</td>
+				<td onclick="addCode('6');">6</td>
+			</tr>
+			<tr>
+				<td onclick="addCode('7');">7</td>
+				<td onclick="addCode('8');">8</td>
+				<td onclick="addCode('9');">9</td>
+			</tr>
+			<tr>
+				<td onclick="addCode('<');"><</td>
+				<td onclick="addCode('0');">0</td>
+				<td onclick="addCode('clear');"><<<</td>
+			</tr>
+			<tr>
+				<td onclick="addCode('Answer');">Answer</td>
+				<td onclick="addCode('?');">?</td>
+				<td onclick="addCode('Remain');">Remain</td>
+			</tr>
+	</table>
+	<input type="text" name="code" value="" maxlength="4" class="display" readonly="readonly" />
+	<p id="message">Need help? press ?</p>
+</form>
+
+</body>
+
+
+
+
+</html>
